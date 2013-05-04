@@ -22,15 +22,20 @@ class MarkdownRenderer
 	def start_search
 		@pages.each { |page|
 		    file = open(page[:url])
-			@content[page[:name]] = @markdown.render(file.read)
+		    content = file.read
+		    content = append_github_link(page[:url], content)
+			@content[page[:name]] = @markdown.render(content)
 		}
 		@content
 	end
 
 	private
 
-	def create_tab_name_from(name)
-		File.basename(name, '.md').gsub(/[-_]/, ' ').capitalize
+	def append_github_link(url, content)
+		match = /raw.github.com\/([\w\d\/\.\-_]*)\/.*\/.*\.md/.match(url)
+		unless match.nil?
+		    content << "\n\n> This description is from the GitHub project [#{match[1]}](https://github.com/#{match[1]}). Full source code is available there.\n"
+		end
 	end
 end
 
