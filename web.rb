@@ -20,6 +20,13 @@ class MarkdownRenderer
 	end
 
 	def start_search
+	    # Add files on disk
+	    Dir['markdown/**/*.md'].each {|fileName|
+			name = create_tab_name_from(fileName)
+			file = File.open(fileName)
+			@content[name] = @markdown.render(file.read)
+		}
+		# Then add the requested remote files
 		@pages.each { |page|
 		    file = open(page[:url])
 		    content = file.read
@@ -30,6 +37,10 @@ class MarkdownRenderer
 	end
 
 	private
+
+	def create_tab_name_from(name)
+		File.basename(name, '.md').gsub(/[-_]/, ' ').capitalize
+	end
 
 	def append_github_link(url, content)
 		match = /raw.github.com\/([\w\d\/\.\-_]*)\/.*\/.*\.md/.match(url)
