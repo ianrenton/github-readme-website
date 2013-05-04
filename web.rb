@@ -2,7 +2,7 @@ require 'rubygems'
 require 'sinatra'
 require 'redcarpet'
 require 'find'
-require 'open-uri'
+require 'open-uri/cached'
 
 class MarkdownRenderer
 
