@@ -2,19 +2,27 @@ require 'rubygems'
 require 'sinatra'
 require 'redcarpet'
 require 'find'
+require 'open-uri'
 
 class MarkdownRenderer
+
 	def initialize ()
+	    @pages = 
+        [
+            {:name => 'SuccessWhale', 
+             :url => 'https://raw.github.com/ianrenton/SuccessWhale/master/README.md'},
+            {:name => 'SuccessWhale API', 
+             :url => 'https://raw.github.com/ianrenton/successwhale-api/master/README.md'}
+        ]
 		@content = {}
 		renderer = Redcarpet::Render::HTML.new(:no_links => true, :hard_wrap => true)
 		@markdown = Redcarpet::Markdown.new(renderer)
 	end
 
 	def start_search
-		Dir['markdown/**/*.md'].each {|fileName|
-			name = create_tab_name_from(fileName)
-			file = File.open(fileName)
-			@content[name] = @markdown.render(file.read)
+		@pages.each { |page|
+		    file = open(page[:url])
+			@content[page[:name]] = @markdown.render(file.read)
 		}
 		@content
 	end
