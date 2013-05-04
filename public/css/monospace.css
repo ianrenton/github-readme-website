@@ -15,24 +15,18 @@ div {
 }
 
 div#window {
-    height:95%;
     padding-top:1em;
 }
 
 div#tabs {
     font-family: "Ubuntu", "Lucida Grande", "Arial", sans-serif;
     width: 70%;
-    height: 100%;
     margin: 0 auto;
 }
 
 div#tabs a {
     font-weight: normal;
     padding: 0.2em 0.4em;
-}
-
-div.ui-tabs-panel {
-    overflow:auto;
 }
 
 h1, .ui-widget-content a {
