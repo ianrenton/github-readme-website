@@ -35,11 +35,11 @@
 		<div id="tabs">
 			<ul>
 			<% 0.upto((content.keys.length) -1) { |i| %>
-				<li><a href="#tab-<%= content.keys[i] %>"><%= content[content.keys[i]][:name] %></a></li>
+				<li><a href="#tab-<%= content.keys[i] %>"><%= content[content.keys[i]]['name'] %></a></li>
 			<% } %>
 			</ul>
 			<% 0.upto((content.keys.length) -1) { |i| %>
-				<div id="tab-<%= content.keys[i] %>"><%= content[content.keys[i]][:html] %></div>
+				<div id="tab-<%= content.keys[i] %>"><%= content[content.keys[i]]['html'] %></div>
 			<% } %>
 		</div>
       </div>

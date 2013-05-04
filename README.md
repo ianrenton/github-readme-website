@@ -10,11 +10,14 @@ Both the application as well as the local markdown files (in `markdown/`) are co
 
 To make immediate use of this project one only needs to execute the following commands:
 
-`$ git clone git://github.com/ianrenton/github-readme-website.git mywebsite`  
-`$ cd mywebsite`  
-`$ heroku create --stack cedar mywebsite`  
-`$ git push heroku master`  
-`$ heroku open`  
+```
+    git clone git://github.com/ianrenton/github-readme-website.git mywebsite
+    cd mywebsite
+    heroku create --stack cedar mywebsite
+    heroku addons:add redistogo:nano
+    git push heroku master
+    heroku open
+```
 
 ### Other ins-and-outs ###
 
