@@ -18,20 +18,28 @@
 					function() { $(this).addClass('ui-state-hover'); }, 
 					function() { $(this).removeClass('ui-state-hover'); }
 				);
+				
+				<% if !slug.nil? %>
+	                var index = $('#tabs a[href="#tab-<%= slug %>"]').parent().index();
+	                if (index<0) index = 0;
+                    $('#tabs').tabs('option', 'active', index);
+	            <% end %>
 
 			});
 		</script>
+	
+	    
 	</head>
 	<body>
 
 		<div id="tabs">
 			<ul>
 			<% 0.upto((content.keys.length) -1) { |i| %>
-				<li><a href="#tabs-<%= content.keys[i] %>"><%= content[content.keys[i]][:name] %></a></li>
+				<li><a href="#tab-<%= content.keys[i] %>"><%= content[content.keys[i]][:name] %></a></li>
 			<% } %>
 			</ul>
 			<% 0.upto((content.keys.length) -1) { |i| %>
-				<div id="tabs-<%= content.keys[i] %>"><%= content[content.keys[i]][:html] %></div>
+				<div id="tab-<%= content.keys[i] %>"><%= content[content.keys[i]][:html] %></div>
 			<% } %>
 		</div>
 	</body>

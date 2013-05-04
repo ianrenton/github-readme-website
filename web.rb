@@ -55,7 +55,7 @@ class MarkdownRenderer
 	end
 end
 
-get '/' do
+get '/?:slug?' do
 	content = MarkdownRenderer.new.start_search
-	erb :index, :locals => { :content => content }
+	erb :index, :locals => { :content => content, :slug => params[:slug] }
 end
