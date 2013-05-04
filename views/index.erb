@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-		<title>Markdown</title>
+		<title>GitHub Readme Website</title>
 		<link type="text/css" href="css/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />	
 		<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
 		<script type="text/javascript" src="js/jquery-ui-1.10.3.custom.min.js"></script>
@@ -29,13 +29,12 @@
 
 		<div id="tabs">
 			<ul>
-			<% sorted_content = content.keys.sort %>
 			<% 0.upto((content.keys.length) -1) { |i| %>
-				<li><a href="#tabs-<%= i %>"><%= sorted_content[i] %></a></li>
+				<li><a href="#tabs-<%= i %>"><%= content.keys[i] %></a></li>
 			<% } %>
 			</ul>
 			<% 0.upto((content.keys.length) -1) { |i| %>
-				<div id="tabs-<%= i %>"><%= content[sorted_content[i]] %></div>
+				<div id="tabs-<%= i %>"><%= content[content.keys[i]] %></div>
 			<% } %>
 		</div>
 	</body>
