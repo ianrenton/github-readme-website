@@ -31,7 +31,7 @@
 	    
 	</head>
 	<body>
-
+      <div id="window">
 		<div id="tabs">
 			<ul>
 			<% 0.upto((content.keys.length) -1) { |i| %>
@@ -42,5 +42,6 @@
 				<div id="tab-<%= content.keys[i] %>"><%= content[content.keys[i]][:html] %></div>
 			<% } %>
 		</div>
+      </div>
 	</body>
 </html>

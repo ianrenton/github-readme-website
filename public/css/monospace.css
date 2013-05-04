@@ -1,20 +1,38 @@
+html {
+    height:100%;
+}
+
 body {
     background-color: black;
     font-size: 65%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 div {
     font-family: "Ubuntu Mono", "Menlo", "Monaco", "DejaVu Sans Mono", "Monospace", monospace;
 }
 
+div#window {
+    height:95%;
+    padding-top:1em;
+}
+
 div#tabs {
     font-family: "Ubuntu", "Lucida Grande", "Arial", sans-serif;
     width: 70%;
+    height: 100%;
     margin: 0 auto;
 }
 
 div#tabs a {
     font-weight: normal;
+    padding: 0.2em 0.4em;
+}
+
+div.ui-tabs-panel {
+    overflow:auto;
 }
 
 h1, .ui-widget-content a {
