@@ -9,10 +9,10 @@ class MarkdownRenderer
 	def initialize ()
 	    @pages = 
         [
-            {:name => 'SuccessWhale', 
-             :url => 'https://raw.github.com/ianrenton/SuccessWhale/master/README.md'},
-            {:name => 'SuccessWhale API', 
-             :url => 'https://raw.github.com/ianrenton/successwhale-api/master/README.md'}
+            {:name => 'GitHub Readme Website', 
+             :url => 'https://raw.github.com/ianrenton/github-readme-website/master/README.md'},
+            {:name => 'Markdown Website Renderer', 
+             :url => 'https://raw.github.com/ciwchris/markdown-website-renderer/master/README.md'}
         ]
 		@content = {}
 		renderer = Redcarpet::Render::HTML.new(:hard_wrap => true)
