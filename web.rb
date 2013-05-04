@@ -5,7 +5,6 @@ require 'find'
 require 'open-uri'
 require 'redis'
 require 'json'
-require 'github/markdown'
 
 class MarkdownRenderer
 
