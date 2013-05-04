@@ -18,7 +18,7 @@ class MarkdownRenderer
              :url => 'https://raw.github.com/ciwchris/markdown-website-renderer/master/README.md'}
         ]
 		@content = {}
-		renderer = Redcarpet::Render::HTML.new(:hard_wrap => true)
+		renderer = Redcarpet::Render::HTML.new()
 		@markdown = Redcarpet::Markdown.new(renderer)
 	end
 
@@ -72,7 +72,6 @@ get '/?:slug?' do
     if redis[:cached_data]
         # Cached data present, so use it
         content = JSON.parse(redis[:cached_data])
-        puts content
     else
         # No cached data, so grab new data and cache it as well as using it now
         content = MarkdownRenderer.new.get_markdowns
