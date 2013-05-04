@@ -68,7 +68,8 @@ end
 get '/?:slug?' do
 
     # Check if we have data cached from a previous call.
-    redis = Redis.new
+    uri = URI.parse(ENV["REDISTOGO_URL"])
+    redis = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
     if redis[:cached_data]
         # Cached data present, so use it
         content = JSON.parse(redis[:cached_data])
