@@ -19,7 +19,8 @@ class MarkdownRenderer
              :url => 'https://raw.github.com/ciwchris/markdown-website-renderer/master/README.md'}
         ]
 		@content = {}
-		@markdown = GitHub::Markdown.new()
+		renderer = Redcarpet::Render::HTML.new()
+		@markdown = Redcarpet::Markdown.new(renderer, {:no_intra_emphasis=>true, :fenced_code_blocks=>true, :autolink=>true, :tables=>true, :with_toc_data=>true})
 	end
 
     # Get all markdown docs, local and remote
@@ -28,7 +29,7 @@ class MarkdownRenderer
 	    Dir['markdown/**/*.md'].each {|fileName|
 			name = create_tab_name_from(fileName)
 			file = File.open(fileName)
-			@content[slugify(name)] = {'name' => name, 'html' => @markdown.render_gfm(file.read)}
+			@content[slugify(name)] = {'name' => name, 'html' => @markdown.render(file.read)}
 		}
 		# Then add the requested remote files
 		@pages.each { |page|
