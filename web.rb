@@ -24,14 +24,14 @@ class MarkdownRenderer
 	    Dir['markdown/**/*.md'].each {|fileName|
 			name = create_tab_name_from(fileName)
 			file = File.open(fileName)
-			@content[name] = @markdown.render(file.read)
+			@content[slugify(name)] = {:name => name, :html => @markdown.render(file.read)}
 		}
 		# Then add the requested remote files
 		@pages.each { |page|
 		    file = open(page[:url])
 		    content = file.read
 		    content = append_github_link(page[:url], content)
-			@content[page[:name]] = @markdown.render(content)
+			@content[slugify(page[:name])] = {:name => page[:name], :html => @markdown.render(content)}
 		}
 		@content
 	end
@@ -41,12 +41,17 @@ class MarkdownRenderer
 	def create_tab_name_from(name)
 		File.basename(name, '.md').gsub(/[-_]/, ' ').capitalize
 	end
+	
+	def slugify(name)
+	    name.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
+	end
 
 	def append_github_link(url, content)
 		match = /raw.github.com\/([\w\d\/\.\-_]*)\/.*\/.*\.md/.match(url)
 		unless match.nil?
 		    content << "\n\n> This description is from the GitHub project [#{match[1]}](https://github.com/#{match[1]}). Full source code is available there.\n"
 		end
+		return content
 	end
 end
 
