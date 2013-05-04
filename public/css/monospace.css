@@ -36,17 +36,18 @@ div.ui-tabs-panel {
 }
 
 h1, .ui-widget-content a {
-    color: #88f
+    color: #88f;
 }
 
 h2, h3, h4 {
-    color: #8f8
+    color: #8f8;
 }
 
 code, pre {
-    color: #ff8
+    color: #ff8;
+    font-size:1.2em;
 }
 
 blockquote {
-    color: #888
+    color: #888;
 }
