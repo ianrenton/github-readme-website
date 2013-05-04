@@ -15,7 +15,7 @@ class MarkdownRenderer
              :url => 'https://raw.github.com/ianrenton/successwhale-api/master/README.md'}
         ]
 		@content = {}
-		renderer = Redcarpet::Render::HTML.new(:no_links => true, :hard_wrap => true)
+		renderer = Redcarpet::Render::HTML.new(:hard_wrap => true)
 		@markdown = Redcarpet::Markdown.new(renderer)
 	end
 
