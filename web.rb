@@ -5,6 +5,8 @@ require 'find'
 require 'open-uri'
 require 'redis'
 require 'json'
+require 'nokogiri'
+require 'uri'
 
 class MarkdownRenderer
 
@@ -35,7 +37,9 @@ class MarkdownRenderer
 		    file = open(page[:url])
 		    content = file.read
 		    content = append_github_link(page[:url], content)
-			@content[slugify(page[:name])] = {'name' => page[:name], 'html' => @markdown.render(content)}
+		    html_content = @markdown.render(content)
+		    html_content = rel_to_abs_urls(page[:url], html_content)
+			@content[slugify(page[:name])] = {'name' => page[:name], 'html' => html_content}
 		}
 		@content
 	end
@@ -61,6 +65,39 @@ class MarkdownRenderer
 		    content << "\n\n> This description is from the GitHub project [#{match[1]}](https://github.com/#{match[1]}). Full source code is available there.\n"
 		end
 		return content
+	end
+	
+	# Convert relative to absolute URLs. Supply the URL that the markdown was
+	# retrieved from and the *HTML* content - not the Markdown. Only useful for
+	# remotely retrieved pages.
+	def rel_to_abs_urls(url, html_content)
+	    # Get the directory the fetched markdown was in
+	    baseURI = "#{File.dirname(url)}/"
+	    
+	    # If Github, get the presentable location for this file not the raw one
+	    match = /raw.github.com\/([\w\d\/\.\-_]*)\/(.*\/).*\.md/.match(url)
+		unless match.nil?
+		    baseURI = "https://github.com/#{match[1]}/blob/#{match[2]}"
+		end
+	    
+	    # Mangle the HTML to find relative links and make them absolute.
+	    doc = Nokogiri::HTML(html_content)
+	    tags = {
+          'img'    => 'src',
+          'a'      => 'href'
+        }
+        doc.search(tags.keys.join(',')).each do |node|
+          url_param = tags[node.name]
+          src = node[url_param]
+          unless (src.empty?)
+            uri = URI.parse(src)
+            # No uri.host means this is a relative link
+            unless uri.host
+              node[url_param] = "#{baseURI}#{src}"
+            end
+          end
+        end
+    doc.to_html
 	end
 end
 
