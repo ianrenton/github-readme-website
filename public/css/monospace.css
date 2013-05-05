@@ -28,17 +28,17 @@ div#tabs .scroller {
     overflow:auto;
 }
 
-div#tabs a {
+div#tabs ul.ui-tabs-nav a {
     font-weight: normal;
     padding: 0.2em 0.4em;
 }
 
-div#tabs li {
-    width:2em;
+div#tabs ul.ui-tabs-nav li {
+    width:3.5em;
     overflow:hidden;
 }
 
-div#tabs li.ui-tabs-active {
+div#tabs ul.ui-tabs-nav li.ui-tabs-active {
     width:auto;
 }
 
