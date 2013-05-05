@@ -32,12 +32,14 @@
 	</head>
 	<body>
       <div id="window">
-		<div id="tabs">
-			<ul>
-			<% 0.upto((content.keys.length) -1) { |i| %>
-				<li><a href="#tab-<%= content.keys[i] %>"><%= content[content.keys[i]]['name'] %></a></li>
-			<% } %>
-			</ul>
+		 <div id="tabs">
+		    <div class="scroller">
+			    <ul>
+			    <% 0.upto((content.keys.length) -1) { |i| %>
+				    <li><a href="#tab-<%= content.keys[i] %>"><%= content[content.keys[i]]['name'] %></a></li>
+			    <% } %>
+			    </ul>
+			</div>
 			<% 0.upto((content.keys.length) -1) { |i| %>
 				<div id="tab-<%= content.keys[i] %>"><%= content[content.keys[i]]['html'] %></div>
 			<% } %>

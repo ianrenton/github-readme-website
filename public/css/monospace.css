@@ -24,9 +24,22 @@ div#tabs {
     margin: 0 auto;
 }
 
+div#tabs .scroller {
+    overflow:auto;
+}
+
 div#tabs a {
     font-weight: normal;
     padding: 0.2em 0.4em;
+}
+
+div#tabs li {
+    width:2em;
+    overflow:hidden;
+}
+
+div#tabs li.ui-tabs-active {
+    width:auto;
 }
 
 h1, .ui-widget-content a {
