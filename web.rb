@@ -18,6 +18,7 @@ class MarkdownRenderer
             {:name => 'Markdown Website Renderer', 
              :url => 'https://raw.github.com/ciwchris/markdown-website-renderer/master/README.md'}
         ]
+    @pages.sort! { |a,b| a[:name].downcase <=> b[:name].downcase }
     @pages.each { |page|
       page[:slug] = slugify(page[:name])
     }
