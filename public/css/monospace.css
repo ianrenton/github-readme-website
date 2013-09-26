@@ -1,70 +1,123 @@
 html {
-    height:100%;
-}
-
-body {
-    background-color: black;
-    font-size: 75%;
     height: 100%;
     margin: 0;
     padding: 0;
+    overflow: auto;
 }
 
-div {
+body {
+    background-color: #222222;
     font-family: "Ubuntu Mono", "Menlo", "Monaco", "DejaVu Sans Mono", "Monospace", monospace;
+    color: white;
+    font-size: 80%;
+    margin: 0;
+    padding: 0;
+    height: 100%;
 }
 
 div#window {
-    padding-top:1em;
+    background-color: black;
+    padding: 0.5em;
+    width: 75em;
+    margin: 2em auto 0 auto;
 }
 
-div#tabs {
-    font-family: "Ubuntu", "Lucida Grande", "Arial", sans-serif;
-    width: 70%;
-    margin: 0 auto;
+table#maintable {
+    border-collapse:collapse;
+    height: 100%;
+    width: 100%;
 }
 
-div#tabs .scroller {
-    overflow:auto;
+table#maintable tbody, table#maintable tr {
+    height: 100%;
 }
 
-div#tabs ul.ui-tabs-nav a {
-    font-weight: normal;
-    padding: 0.2em 0.4em;
+table#maintable td {
+    height: 100%;
+    border: 1px solid #00ff00;
+    vertical-align:top;
 }
 
-div#tabs ul.ui-tabs-nav li {
-    width:3.5em;
-    overflow:hidden;
+div#left {
+    width: 15em;
+    padding: 0.1em;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
-div#tabs ul.ui-tabs-nav li.ui-tabs-active {
-    width:auto;
+div#left-title {
+    text-decoration:underline;
+    padding-bottom: 1em;
+    color: #00ff00;
 }
 
-h1, .ui-widget-content a {
-    color: #88f;
+div#left ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
 }
 
-h2, h3, h4 {
-    color: #8f8;
+div#left ul li {
+    white-space: nowrap;
+}
+
+div#left ul li a {
+    color: #00ff00;
+    text-decoration: none;
+}
+
+div#left ul li.current {
+    background-color: #00ff00;
+}
+
+div#left ul li.current a {
+    color: #000000;
+}
+
+div#left ul li a:hover {
+    color: #ffffff;
+}
+
+div#right {
+    height: 100%;
+    padding: 1.1em;
+    overflow: auto;
+}
+
+div.clear {
+    clear:both;
+}
+
+h1, h2, h3, h4 {
+    font-size: 100%;
+    margin: 0;
+}
+
+h1 {
+    color: #ff0000;
+    font-weight:bold;
+    text-decoration:underline;
 }
 
 h2 {
-    font-size: 180%;
+    color: #ffff00;
+    font-weight:bold;
+    text-decoration:underline;
 }
 
 h3 {
-    font-size: 160%;
+    color: #ffff00;
+    text-decoration:underline;
 }
 
 h4 {
-    font-size: 140%;
+    color: #ffff00;
+    font-weight:bold;
 }
 
 code {
-    color: #ff8;
-    font-size:1.2em;
+    color: #aaf;
+    font-size: 130%;
 }
 
 blockquote {

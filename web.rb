@@ -3,7 +3,6 @@ require 'sinatra'
 require 'redcarpet'
 require 'find'
 require 'open-uri'
-require 'redis'
 require 'json'
 require 'nokogiri'
 require 'uri'
@@ -19,35 +18,51 @@ class MarkdownRenderer
             {:name => 'Markdown Website Renderer', 
              :url => 'https://raw.github.com/ciwchris/markdown-website-renderer/master/README.md'}
         ]
+    @pages.each { |page|
+      page[:slug] = slugify(page[:name])
+    }
 		@content = {}
 		renderer = Redcarpet::Render::HTML.new()
 		@markdown = Redcarpet::Markdown.new(renderer, {:no_intra_emphasis=>true, :fenced_code_blocks=>true, :autolink=>true, :tables=>true, :with_toc_data=>true})
 	end
 
-    # Get all markdown docs, local and remote
-	def get_markdowns
+  # Get a list of all local and remote markdowns
+	def get_file_list
 	    # Add files on disk
 	    Dir['markdown/**/*.md'].each {|fileName|
-			name = create_tab_name_from(fileName)
-			file = File.open(fileName)
-			@content[slugify(name)] = {'name' => name, 'html' => @markdown.render(file.read)}
+			name = create_name_from(fileName)
+			@content[slugify(name)] = {'name' => name, 'shortname' => shorten(name), 'slug' => slugify(name), 'file' => fileName, 'remote' => false}
 		}
 		# Then add the requested remote files
 		@pages.each { |page|
-		    file = open(page[:url])
-		    content = file.read
-		    content = append_github_link(page[:url], content)
-		    html_content = @markdown.render(content)
-		    html_content = rel_to_abs_urls(page[:url], html_content)
-			@content[slugify(page[:name])] = {'name' => page[:name], 'html' => html_content}
+			@content[slugify(page[:name])] = {'name' => page[:name], 'shortname' => shorten(page[:name]), 'slug' => slugify(page[:name]), 'file' => page[:url], 'remote' => true}
 		}
+		@content
+	end
+
+    # Add the render of a markdown file to @content
+	def get_markdown(slug)
+	
+    if @content[slug]['remote']
+      file = open(@content[slug]['file'])
+	    content = file.read
+	    content = append_github_link(@content[slug]['file'], content)
+	    html_content = @markdown.render(content)
+	    html_content = rel_to_abs_urls(@content[slug]['file'], html_content)
+	  else
+	    file = File.open(@content[slug]['file'])
+	    html_content = @markdown.render(file.read)
+	  end
+    
+    @content[slug] = @content[slug].merge({'html' => html_content})
+	
 		@content
 	end
 
 	private
 
     # Create a "pretty" name from a local Markdown filename
-	def create_tab_name_from(name)
+	def create_name_from(name)
 		File.basename(name, '.md').gsub(/[-_]/, ' ').capitalize
 	end
 	
@@ -55,6 +70,15 @@ class MarkdownRenderer
 	# the valid URLs that automatically select each tab.
 	def slugify(name)
 	    name.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
+	end
+	
+	# Create a shortened form of a name, truncating to the width of the menu div.
+	def shorten(name)
+	    if name.length < 25
+	      return name
+	    else
+	      return name[0,21] + '...'
+	    end
 	end
 
     # Check if a given URL is to a Markdown file in a Github repo, and if so,
@@ -101,22 +125,21 @@ class MarkdownRenderer
 	end
 end
 
-# Respond to the HTTP request, with optional slug to select a tab by default.
+# Respond to the HTTP request, with optional slug to select a page.
 get '/?:slug?' do
 
-    # Check if we have data cached from a previous call.
-    uri = URI.parse(ENV["REDISTOGO_URL"])
-    redis = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
-    if redis[:cached_data]
-        # Cached data present, so use it
-        content = JSON.parse(redis[:cached_data])
-    else
-        # No cached data, so grab new data and cache it as well as using it now
-        content = MarkdownRenderer.new.get_markdowns
-        redis[:cached_data] = content.to_json
-        redis.expire(:cached_data, 60*60*24)
-    end
+  # Request index file unless told otherwise
+  if params[:slug]
+    slug = params[:slug]
+  else
+    slug = 'index'
+  end
+  
+  # Get requested Markdown file, and links to all the others
+  renderer = MarkdownRenderer.new
+  renderer.get_file_list
+  content = renderer.get_markdown(slug)
 	
 	# Generate output
-	erb :index, :locals => { :content => content, :slug => params[:slug] }
+	erb :index, :locals => { :content => content, :slug => slug}
 end
