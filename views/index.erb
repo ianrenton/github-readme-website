@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-		<title><% if content[slug]['name'] %><%= content[slug]['name'] %> - <% end %>GitHub Readme Website</title>
+		<title><% if content[slug] && content[slug]['name'] %><%= content[slug]['name'] %><% else %>Page not Found<% end %> - GitHub Readme Website</title>
 		<link type="text/css" href="css/monospace.css" rel="stylesheet" />
    
 	</head>
@@ -19,7 +19,12 @@
         </div>
       </td><td>
         <div id="right">
-		      <%= content[slug]['html'] %>
+		      <% if content[slug] then %>
+		        <%= content[slug]['html'] %>
+		      <% else %>
+		        <h1>Error 404: File not found</h1>
+		        <p>The system could not read from the file <code><%= slug %></code>. Select a file to view from the list on the left.</p>
+		      <% end %>
         </div>
       </td></tr></table>
     </div>

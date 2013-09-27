@@ -138,8 +138,17 @@ get '/?:slug?' do
   
   # Get requested Markdown file, and links to all the others
   renderer = MarkdownRenderer.new
-  renderer.get_file_list
-  content = renderer.get_markdown(slug)
+  content = renderer.get_file_list
+  
+  if content[slug]
+    # If the slug matches something in the page index, fetch the markdown
+    # for it.
+    content = renderer.get_markdown(slug)
+  else
+    # If page not found, set status 404. Render the page anyway, because
+    # the template deals with 404 error display.
+    status 404
+  end
 	
 	# Generate output
 	erb :index, :locals => { :content => content, :slug => slug}
